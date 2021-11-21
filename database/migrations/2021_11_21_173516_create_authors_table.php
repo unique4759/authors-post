@@ -18,7 +18,7 @@ class CreateAuthorsTable extends Migration
             $table->string('name')->nullable();
             $table->string('surname')->nullable();
             $table->string('patronymic')->nullable();
-            $table->integer('age')->nullable();
+            $table->unsignedBigInteger('age')->nullable();
             $table->timestamps();
         });
     }
