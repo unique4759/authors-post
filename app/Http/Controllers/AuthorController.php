@@ -14,9 +14,9 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        return view('authors.index', [
-            'authors' => Author::get()
-        ]);
+        $authors = Author::get();
+
+        return response($authors);
     }
 
     /**
@@ -26,9 +26,7 @@ class AuthorController extends Controller
      */
     public function create()
     {
-        return view('authors.create', [
-            'author' => []
-        ]);
+        return response([]);
     }
 
     /**
@@ -41,7 +39,7 @@ class AuthorController extends Controller
     {
         $author = Author::create($request->all());
 
-        return $author;
+        return response($author);
     }
 
     /**
@@ -52,7 +50,7 @@ class AuthorController extends Controller
      */
     public function show(Author $author)
     {
-        return view('authors.show', ['author' => $author]);
+        return response($author);
     }
 
     /**
@@ -63,9 +61,7 @@ class AuthorController extends Controller
      */
     public function edit(Author $author)
     {
-        return view('authors.edit', [
-            'author' => $author
-        ]);
+        return response($author);
     }
 
      /**
@@ -78,8 +74,8 @@ class AuthorController extends Controller
     public function update(Request $request, Author $author)
     {
         $author->update($request->all());
-        
-        return $author;
+
+        return response($author);
     }
 
     /**
@@ -92,6 +88,6 @@ class AuthorController extends Controller
     {
         $author->delete();
 
-        return 'success';
+        return response('success');
     }
 }

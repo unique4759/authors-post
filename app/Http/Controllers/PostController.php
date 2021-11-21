@@ -13,9 +13,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts.index', [
-            'posts' => Post::get()
-        ]);
+        $post = Post::get();
+
+        return response($post);
     }
 
     /**
@@ -25,7 +25,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create', [
+        return response([
             'post' => [],
             'authors' => Author::get()
         ]);
@@ -45,7 +45,7 @@ class PostController extends Controller
             $post->authors()->attach($request->input('authors'));
         }
 
-        return 'success';
+        return response($post);
     }
 
     /**
@@ -56,7 +56,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', ['post' => $post]);
+        return response($post);
     }
 
     /**
@@ -67,7 +67,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('posts.edit', [
+        return response([
             'post' => $post,
             'authors' => Author::get()
         ]);
@@ -90,7 +90,7 @@ class PostController extends Controller
             $post->authors()->attach($request->input('authors'));
         }
 
-        return 'success';
+        return response($post);
     }
 
     /**
@@ -103,6 +103,6 @@ class PostController extends Controller
     {
         $post->authors()->detach();
 
-        return 'success';
+        return response('success');
     }
 }

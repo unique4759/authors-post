@@ -14,8 +14,11 @@ class CreateAuthorPostTable extends Migration
     public function up()
     {
         Schema::create('author_post', function (Blueprint $table) {
-            $table->integer('author_id');
-            $table->integer('post_id');
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->unsignedBigInteger('post_id')->nullable();
+
+            $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
         });
     }
 
