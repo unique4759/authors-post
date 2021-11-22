@@ -2,8 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('/authors', AuthorController::class);
-Route::resource('/posts', PostController::class);
+Route::apiResource('posts', '\App\Http\Controllers\API\PostController');
+Route::apiResource('authors', '\App\Http\Controllers\API\AuthorController');

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
 
-  protected $fillable = ['disabled'];
-
+  protected $fillable = ['title', 'disatextbled', 'disabled'];
+  
   /**
    * Relation authors.
    *
