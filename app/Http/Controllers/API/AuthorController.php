@@ -14,7 +14,7 @@ class AuthorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): JsonResource
+    public function index()
     {
         return AuthorResource::collection(Author::all());
     }
@@ -25,7 +25,7 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): JsonResource
+    public function store(Request $request)
     {
         $author_data = $request->validate([
             'name' => 'required|max:255',
@@ -45,7 +45,7 @@ class AuthorController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id): JsonResource
+    public function show($id)
     {
         $author = Author::findOrFail($id);
 
@@ -59,7 +59,7 @@ class AuthorController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id): JsonResource
+    public function update(Request $request, $id)
     {
         $author = Author::findOrFail($id);
 
@@ -86,7 +86,7 @@ class AuthorController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): JsonResource
+    public function destroy($id)
     {
         $author = Author::findOrFail($id);
         $author->delete();

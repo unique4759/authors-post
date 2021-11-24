@@ -14,7 +14,7 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): JsonResource
+    public function index()
     {
         return PostResource::collection(Post::all());
     }
@@ -25,7 +25,7 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): JsonResource
+    public function store(Request $request)
     {
         $post_data = $request->validate([
             'title' => 'required|max:255',
@@ -48,7 +48,7 @@ class PostController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id): JsonResource
+    public function show($id)
     {
         $post = Post::findOrFail($id);
         
@@ -62,7 +62,7 @@ class PostController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id): JsonResource
+    public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
 
@@ -93,7 +93,7 @@ class PostController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id): JsonResource
+    public function destroy($id)
     {
         $post = Post::findOrFail($id);
 
