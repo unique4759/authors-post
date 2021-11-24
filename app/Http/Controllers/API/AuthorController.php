@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Author;
 use Illuminate\Http\Request;
+use App\Http\Resources\Author as AuthorResource;
 
 class AuthorController extends Controller
 {
@@ -13,11 +14,9 @@ class AuthorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): JsonResource
     {
-        $authors = Author::all();
-
-        return response()->json($authors);
+        return AuthorResource::collection(Author::all());
     }
 
     /**
@@ -26,25 +25,18 @@ class AuthorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResource
     {
-        $request->validate([
+        $author_data = $request->validate([
             'name' => 'required|max:255',
             'surname' => 'required|max:255',
             'patronymic' => 'required|max:255',
             'age' => 'required'
         ]);
     
-        $newAuthor = new Author([
-            'name' => $request->get('name'),
-            'surname' => $request->get('surname'),
-            'patronymic' => $request->get('patronymic'),
-            'age' => $request->get('age'),
-        ]);
+        $new_author = Author::create($author_data);
     
-        $newAuthor->save();
-    
-        return response()->json($newAuthor);
+        return new AuthorResource($new_author);
     }
 
     /**
@@ -53,11 +45,11 @@ class AuthorController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): JsonResource
     {
         $author = Author::findOrFail($id);
 
-        return response()->json($author);
+        return new AuthorResource($author);
     }
 
      /**
@@ -67,7 +59,7 @@ class AuthorController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResource
     {
         $author = Author::findOrFail($id);
 
@@ -85,7 +77,7 @@ class AuthorController extends Controller
     
         $author->save();
     
-        return response()->json($author);
+        return new AuthorResource($author);
     }
 
     /**
@@ -94,11 +86,11 @@ class AuthorController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): JsonResource
     {
         $author = Author::findOrFail($id);
         $author->delete();
     
-        return response()->json($author::all());
+        return AuthorResource::collection(Author::all());
     }
 }

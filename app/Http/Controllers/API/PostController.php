@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use App\Http\Resources\Post as PostResource;
 
 class PostController extends Controller
 {
@@ -13,11 +14,9 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): JsonResource
     {
-        $post = Post::get();
-
-        return response()->json($post);
+        return PostResource::collection(Post::all());
     }
 
       /**
@@ -26,27 +25,21 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResource
     {
-        $request->validate([
+        $post_data = $request->validate([
             'title' => 'required|max:255',
             'text' => 'required',
             'disabled' => 'required'
         ]);
       
-        $newPost = new Post([
-            'title' => $request->get('title'),
-            'text' => $request->get('text'),
-            'disabled' => $request->get('disabled')
-        ]);
+        $new_post = Post::create($post_data);
     
-        $newPost->save();
-
         if ($request->input('authors')) {
-            $newPost->authors()->attach($request->input('authors'));
+            $new_post->authors()->attach($request->input('authors'));
         }
-      
-        return response()->json($newPost);
+
+        return new PostResource($new_post);
     }
 
     /**
@@ -55,11 +48,11 @@ class PostController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id): JsonResource
     {
         $post = Post::findOrFail($id);
-
-        return response()->json($post);
+        
+        return new PostResource($post);
     }
 
     /**
@@ -69,7 +62,7 @@ class PostController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResource
     {
         $post = Post::findOrFail($id);
 
@@ -91,7 +84,7 @@ class PostController extends Controller
             $post->authors()->attach($request->input('authors'));
         }
 
-        return response()->json($post);
+        return new PostResource($post);
     }
 
     /**
@@ -100,7 +93,7 @@ class PostController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id): JsonResource
     {
         $post = Post::findOrFail($id);
 
@@ -108,6 +101,6 @@ class PostController extends Controller
 
         $post->delete();
 
-        return response()->json($post::all());
+        return PostResource::collection(Post::all());
     }
 }
